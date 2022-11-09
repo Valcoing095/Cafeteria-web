@@ -60,6 +60,16 @@
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-12">
                     <div class="form-group">
+                        <strong>Stock:</strong>
+                        <input type="text" name="stock" value="{{ $producto->stock }}" class="form-control"
+                            placeholder="Company stock">
+                        @error('stock')
+                        <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="form-group">
                         <strong>Peso:</strong>
                         <input type="text" name="peso" value="{{ $producto->peso }}" class="form-control"
                             placeholder="Company peso">

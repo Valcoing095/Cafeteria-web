@@ -101,6 +101,7 @@ class ProductoController extends Controller
                     'nombre_producto' => $request->nombre,
                     'referencia' => $request->referencia,
                     'peso' => $request->peso,
+                    'stock' => $request->stock,
                 ]);
 
         return redirect()->route('producto.index')->with('success','Company Has Been updated successfully');

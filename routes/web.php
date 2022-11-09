@@ -31,4 +31,6 @@ Route::post('/product/update{id}',[ProductoController::class, 'update'])->name('
 
 // Rutas del modulo de tienda
 Route::get('/productos/tienda',[TiendaController::class, 'index'])->name('tienda.index');
-Route::post('/productos/tienda/create/{id}',[TiendaController::class, 'update'])->name('tienda.update');
+Route::post('/vender/product/{id}',[TiendaController::class, 'update'])->name('tienda.update');
+Route::get('/productos/tienda/historial',[TiendaController::class, 'ventas'])->name('tienda.ventas');
+
