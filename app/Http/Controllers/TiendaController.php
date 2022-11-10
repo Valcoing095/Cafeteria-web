@@ -17,6 +17,21 @@ class TiendaController extends Controller
     public function index()
     {
         $productos = producto::all();
+        foreach ($productos as $producto){
+            if($producto->categoria == "Lacteo"){
+                $producto->img= "/images/4.png";
+            }elseif($producto->categoria == "Dulce"){
+                $producto->img= "/images/2.png";
+            }elseif($producto->categoria == "Cafe"){
+                $producto->img= "/images/3.png";
+            }elseif($producto->categoria == "Capuccino"){
+                $producto->img= "/images/5.png";
+            }elseif($producto->categoria == "Late"){
+                $producto->img= "/images/6.png";
+            }elseif($producto->categoria == "Te"){
+                $producto->img= "/images/7.png";
+            }
+        }
         return view('tienda.index',compact('productos'));
     }
 

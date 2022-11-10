@@ -48,7 +48,14 @@
                             </div>
                             <div class="mb-3">
                                 <label for="categoria" class="form-label">Categoria</label>
-                                <input type="text" class="form-control" name="categoria" id="categoria" aria-describedby="emailHelp">
+                                <select type="text" class="form-control" name="categoria" id="categoria" aria-describedby="emailHelp">
+                                    <option>Dulce</option>
+                                    <option>Cafe</option>
+                                    <option>Lacteo</option>
+                                    <option>Capuccino</option>
+                                    <option>Late</option>
+                                    <option>Te</option>
+                                </select>
                             </div>
                             <div class="mb-3">
                                 <label for="stock" class="form-label">Cantidad</label>
