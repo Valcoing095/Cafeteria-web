@@ -12,4 +12,4 @@
 - El documento de la base de datos se encuentra adjunto en los archivos de lproyecto, se llama "KonectaDB.sql" su codigo se debe correr en el administrador de bases de datos
 - La maquina que va a correr el proyecto debe contar con laravel 9 y composer instalado
 - Para poder correr el proyecto se deben ejectuar los siguiente comandos:
-    
+- Crear modelos con controller php artisan make:model User -mcr

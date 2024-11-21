@@ -25,6 +25,9 @@
               </div>
             </div>
           </nav>
+          <section class="bg-dark">
+            <h1 >Hola</h1>
+          </section>
     </body>
 </html>
 
