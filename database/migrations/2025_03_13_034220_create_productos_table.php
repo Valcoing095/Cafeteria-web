@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('iva');
             $table->integer('descuento');
             $table->integer('stock');
-            $table->foreign('id_categoria')->references('id')->on('categoria');
+            $table->foreignId('id_categoria')->references('id')->on('categoria_productos');
             $table->date('created_at');
         });
     }
