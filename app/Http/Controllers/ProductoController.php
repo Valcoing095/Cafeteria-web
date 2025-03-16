@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\producto;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use function PHPUnit\Framework\containsEqual;
+use Illuminate\Validation\ValidationException;
 
 class ProductoController extends Controller
 {
@@ -16,9 +18,21 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        $productos = producto::all();
-        return view('products.index',compact('productos'));
+        try{
+            $productos = Producto::with('categoriaProducto')->get();
 
+        return response()->json([
+            'message' => $productos
+        ], Response::HTTP_OK);
+
+        }catch (ValidationException $e) {
+            // Captura los errores de validación y los devuelve en formato JSON
+            return response()->json([
+                'message' => 'Error en el registro',
+                'errors'  => $e->errors(),
+            ], 422);
+        }
+        
     }
 
     /**

@@ -23,6 +23,8 @@ Route::post('/register', [AuthController::class,'register']);
 Route::post('/login', [AuthController::class,'login']);
 Route::get('/usersRol', [AuthController::class,'index']);
 
+#Productos
 
+Route::get('/products',[ProductoController::class, 'index']);
 // Route::get('/product/product/{id}',[ProductoController::class, 'show']);
 

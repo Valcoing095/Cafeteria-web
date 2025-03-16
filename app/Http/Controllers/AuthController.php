@@ -27,7 +27,7 @@ class AuthController extends Controller
                 'nombre'   => $validateRequest['nombre'],
                 'apellido' => $validateRequest['apellido'],
                 'email'    => $validateRequest['email'],
-                'password'         =>bcrypt($validateRequest['password']), // 🔹 Se encripta la contraseña
+                'password' => bcrypt($validateRequest['password']), // 🔹 Se encripta la contraseña
                 'id_rol'   => 1, // 🔹 Se cambia 'i_rol' por 'id_rol'
             ]);
         
@@ -58,18 +58,17 @@ class AuthController extends Controller
 
         $user = Auth::user();
 
-        $payload = [
-            'sub' => $user->id,
-            'email' => $user->email,
-            'exp' => now()->addHours(4)->timestamp, // Expira en 2 horas
-        ];
+        // $payload = [
+        //     'sub' => $user->id,
+        //     'email' => $user->email,
+        //     'exp' => now()->addHours(4)->timestamp, // Expira en 2 horas
+        // ];
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
             'Message' => 'Login success',
-            'user' => $user,
-            'token' => $token
+            'user' => ["email"=>$user->email,'token' => $token]
         ]);
 
     }
@@ -80,6 +79,7 @@ class AuthController extends Controller
      */
     public function index()
     {
+        
         $users = Usuario::with('rolingroles')->get();
        
         return response()->json($users) ;
