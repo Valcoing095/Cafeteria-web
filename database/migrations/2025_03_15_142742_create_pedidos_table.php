@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->references('id')->on('usuarios');
             $table->integer('total');
             $table->enum('estado',['Pendiente','Proceso','cancelado','entregado']);
-            $table->string('direccion');
+            $table->string('direccion')->nullable();;
             $table->timestamps();
         });
     }

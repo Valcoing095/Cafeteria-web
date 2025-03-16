@@ -1,9 +1,5 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    './resources/views/**/*.blade.php', // Plantillas Blade
-    './resources/js/**/*.vue',          // Archivos Vue.js (opcional)
-  ],
+  content: ["./resources/**/*.blade.php", "./resources/**/*.js", "./resources/**/*.vue"],
   theme: {
     extend: {},
   },

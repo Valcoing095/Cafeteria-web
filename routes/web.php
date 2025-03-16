@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ProductoController;
+use App\Livewire\Productos;
 use App\Http\Controllers\TiendaController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,11 +23,10 @@ Route::get('/',function(){
     return view('welcome');
 });
 // Rutas para productos
-Route::get('/productos',[ProductoController::class, 'index'])->name('producto.index');
-Route::post('/product',[ProductoController::class, 'store'])->name('producto.store');
-Route::post('/product/delete/{id}',[ProductoController::class, 'destroy'])->name('producto.destroy');
-Route::get('/product/edit/{id}',[ProductoController::class, 'edit'])->name('producto.edit');
-Route::post('/product/update{id}',[ProductoController::class, 'update'])->name('producto.update');
+#Productos
+
+Route::get('/products',Productos::class)->name('getProducts');
+
 
 
 // Rutas del modulo de tienda

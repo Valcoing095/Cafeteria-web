@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProductoController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -25,6 +27,9 @@ Route::get('/usersRol', [AuthController::class,'index']);
 
 #Productos
 
-Route::get('/products',[ProductoController::class, 'index']);
+// Route::get('/products',[Productos]);
 // Route::get('/product/product/{id}',[ProductoController::class, 'show']);
+
+#Pedido
+Route::post('/pedido', [PedidoController::class,'crearPedido']);
 
