@@ -2,32 +2,47 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use App\Models\User;
+use Illuminate\Validation\ValidationException;
+use App\Models\Usuario;
 
 class AuthController extends Controller
 {
 
 
-    public function register(Request $request){
-        $validateRequest = $request->validate([
-            'name' => 'required|string|max|255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'require|string|min:8|confirmed'
-        ]);
+    public function register(Request $request)
+    {
+        try{
+            // Validar request
+            $validateRequest = $request->validate([
+                'nombre'   => 'required|string',
+                'apellido' => 'required|string',
+                'email'    => 'required|string|email|unique:usuarios,email',
+                'password' => 'required|string|min:6',
+            ]);
+        
+            // Crear usuario con contraseña encriptada
+            $usuario = Usuario::create([
+                'nombre'   => $validateRequest['nombre'],
+                'apellido' => $validateRequest['apellido'],
+                'email'    => $validateRequest['email'],
+                'password'         =>bcrypt($validateRequest['password']), // 🔹 Se encripta la contraseña
+                'id_rol'   => 1, // 🔹 Se cambia 'i_rol' por 'id_rol'
+            ]);
+        
+            return response()->json([
+                'message' => 'Usuario registrado exitosamente',
+                'user'    => $usuario,
+            ], 201);
 
-        $user = User::create([
-            'name' => $validateRequest['name'],
-            'email' => $validateRequest['email'],
-            'password' => $validateRequest['password']
-        ]);
-
-        return response()->json([
-            'Message' => 'Successful user registration',
-            'User' => $user,        
-            ],201);
-
+        }catch (ValidationException $e) {
+            // Captura los errores de validación y los devuelve en formato JSON
+            return response()->json([
+                'message' => 'Error en el registro',
+                'errors'  => $e->errors(),
+            ], 422);
+        }
     }
 
 
@@ -38,10 +53,16 @@ class AuthController extends Controller
         ]);
 
         if(!Auth::attempt($credentials)){
-            return response()->json(['message' => 'Invalid Credentials'],401
-        );
+            return response()->json(['message' => 'Invalid Credentials'],401);
+        }
 
         $user = Auth::user();
+
+        $payload = [
+            'sub' => $user->id,
+            'email' => $user->email,
+            'exp' => now()->addHours(4)->timestamp, // Expira en 2 horas
+        ];
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
@@ -51,7 +72,6 @@ class AuthController extends Controller
             'token' => $token
         ]);
 
-        }
     }
     /**
      * Display a listing of the resource.
@@ -60,7 +80,9 @@ class AuthController extends Controller
      */
     public function index()
     {
-        //
+        $users = Usuario::with('rolingroles')->get();
+       
+        return response()->json($users) ;
     }
 
     /**
