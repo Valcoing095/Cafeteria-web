@@ -12,6 +12,8 @@ class PedidoController extends Controller
 
     public function crearPedido(Request $request){
         try{
+
+            dd($request);
             
             #Validar que si llegue el usuario en el request
               // Validar request
