@@ -17,7 +17,7 @@
                         <h4 class="text-success fw-bold mt-auto">${{ number_format($producto->valor_bruto, 2) }}</h4>
                     </div>
                     <div class="card-footer bg-white border-top pt-3">
-                        <button wire:click="addProducto({{ $producto->id }})" class="btn btn-outline-danger w-100">
+                        <button wire:click="actionProducto({{ $producto->id }},'add')" class="btn btn-outline-danger w-100">
                             ➕ Añadir
                         </button>
                     </div>
@@ -53,11 +53,11 @@
 
                             <!-- Cantidad -->
                             <div class="d-flex align-items-center">
-                                <button class="btn btn-sm btn-outline-danger me-2" wire:click="quitarProducto({{ $item->producto_id }})">
+                                <button class="btn btn-sm btn-outline-danger me-2" wire:click="actionProducto({{ $item->producto_id }},'delete')">
                                     ➖
                                 </button>
                                 <span class="badge bg-primary rounded-pill px-3 py-2">{{ $item->cantidad }}</span>
-                                <button class="btn btn-sm btn-outline-success ms-2" wire:click="agregarProducto({{ $item->producto_id }})">
+                                <button class="btn btn-sm btn-outline-success ms-2" wire:click="actionProducto({{ $item->producto_id }},'add')">
                                     ➕
                                 </button>
                             </div>
@@ -77,7 +77,7 @@
           <div class="modal-footer d-flex justify-content-between">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             @if (count($productosEnPedido) > 0)
-                <button wire:click="comprar" class="btn btn-success">🛍️ Comprar</button>
+                <button wire:click="facturar_pedido" class="btn btn-success">🛍️ Comprar</button>
             @endif
           </div>
         </div>

@@ -43,8 +43,9 @@ class Productos extends Component
         }
     }
 
+   
     # Agregar un producto al pedido
-    public function addProducto($producto_id)
+    public function actionProducto($producto_id,$action)
     {
         // Verificar que haya un pedido activo
         if (!$this->pedido) {
@@ -57,8 +58,18 @@ class Productos extends Component
             ->first();
 
         if ($productoPedido) {
-            $productoPedido->increment('cantidad'); // Aumenta en 1
-            $productoPedido->increment('subTotal', $productoPedido->producto->valor_bruto);
+            if($action =="add"){
+                $productoPedido->increment('cantidad'); // Aumenta en 1
+                $productoPedido->increment('subTotal', $productoPedido->producto->valor_bruto);
+            }else{
+                if ($productoPedido->cantidad >1){
+                    $productoPedido->decrement('cantidad'); // Aumenta en 1
+                    $productoPedido->decrement('subTotal', $productoPedido->producto->valor_bruto);
+                }else{
+                    // Si la cantidad es 1, eliminar el producto del pedido
+                     $productoPedido->delete();
+                }
+            }
         }else{
             // Crear el registro en pedido_producto
             pedido_producto::create([
@@ -71,7 +82,11 @@ class Productos extends Component
 
 
         // Actualizar el total del pedido
-        $this->pedido->total += Producto::find($producto_id)->valor_bruto;
+        if($action=="add"){
+            $this->pedido->total += Producto::find($producto_id)->valor_bruto;
+        }else{
+            $this->pedido->total -= Producto::find($producto_id)->valor_bruto;
+        }
         $this->pedido->save();
 
         $this->actualizarPedido();
@@ -80,28 +95,28 @@ class Productos extends Component
     }
 
     # Obtener productos del pedido y actualizar el total
+
+
+    private function obtenerProductosPedido()
+{
+    return pedido_producto::with('producto')
+        ->where('pedido_productos.pedido_id', $this->pedido->id)
+        ->get();
+}
     public function actualizarPedido()
     {
         if ($this->pedido) {
-            // $this->productosEnPedido = pedido_producto::where('pedido_id', $this->pedido->id)
-            //     ->with('producto')
-            //     // ->groupBy('producto_id')
-            //     ->get();
-            $this->productosEnPedido = pedido_producto::selectRaw('
-                pedido_productos.producto_id, 
-                COUNT(pedido_productos.producto_id) as cantidad, 
-                productos.nombre, 
-                productos.valor_bruto, 
-                productos.iva, 
-                productos.descuento
-            ')
-            ->join('productos', 'pedido_productos.producto_id', '=', 'productos.id') // Unir con productos
-            ->where('pedido_productos.pedido_id', 6)
-            ->groupBy('pedido_productos.producto_id', 'productos.nombre', 'productos.valor_bruto', 'productos.iva', 'productos.descuento') // Agrupar por todos los campos seleccionados
-            ->get();
-            dd($this->productosEnPedido);
+
+            $this->productosEnPedido = $this->obtenerProductosPedido();
             $this->totalPedido = $this->pedido->total;
         }
+    }
+
+    public function facturar_pedido(){
+        $pedido = $this->obtenerProductosPedido();
+        // return redirect()->route('pedido.detalle', ['pedido' => $pedido->id]);
+        $this->emit('productosSeleccionados', $pedido);
+        
     }
 
     public function render()

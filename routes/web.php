@@ -3,6 +3,7 @@
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ProductoController;
 use App\Livewire\Productos;
+use App\Livewire\pedido;
 use App\Http\Controllers\TiendaController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,3 +35,5 @@ Route::get('/productos/tienda',[TiendaController::class, 'index'])->name('tienda
 Route::post('/vender/product/{id}',[TiendaController::class, 'update'])->name('tienda.update');
 Route::get('/productos/tienda/historial',[TiendaController::class, 'ventas'])->name('tienda.ventas');
 
+// Facturar pedido
+Route::get('/pedido/{pedido}', pedido::class)->name('pedido.detalle');
